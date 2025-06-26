@@ -2,3 +2,8 @@
 	path = CANopenNode
 	url = https://github.com/CANopenNode/CANopenNode
 	branch = master
+
+[submodule "master-modbus"]
+	path = master-modbus
+	url = https://github.com/nimaltd/master-modbus
+	branch = master
