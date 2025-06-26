@@ -8,7 +8,7 @@ Description=
 CreationTime=8:30PM
 CreationDate=06-22-2025
 CreatedBy=Sam Kwok
-ModificationTime=10:55AM
+ModificationTime=4:09PM
 ModificationDate=06-26-2025
 ModifiedBy=Sam Kwok
 
@@ -125,7 +125,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [OptionalObjects]
-SupportedObjects=36
+SupportedObjects=44
 1=0x1003
 2=0x1005
 3=0x1006
@@ -153,15 +153,23 @@ SupportedObjects=36
 25=0x1A02
 26=0x1A03
 27=0x6000
-28=0x6010
-29=0x6011
-30=0x6012
-31=0x6020
-32=0x6021
-33=0x6024
-34=0x6025
-35=0x6100
-36=0x6110
+28=0x6002
+29=0x6005
+30=0x6006
+31=0x6007
+32=0x6008
+33=0x6009
+34=0x600A
+35=0x600B
+36=0x6010
+37=0x6011
+38=0x6012
+39=0x6020
+40=0x6021
+41=0x6024
+42=0x6025
+43=0x6100
+44=0x6110
 
 [1003]
 ParameterName=Pre-defined error field
@@ -1168,7 +1176,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=1
+DefaultValue=2
 PDOMapping=0
 
 [1A00sub1]
@@ -1186,7 +1194,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60020008
 PDOMapping=0
 
 [1A00sub3]
@@ -1508,10 +1516,88 @@ PDOMapping=0
 ParameterName=vacuum pressure
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0006
+DataType=0x0003
 AccessType=ro
 DefaultValue=0
 PDOMapping=1
+
+[6002]
+ParameterName=vacuum output
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6005]
+ParameterName=vacuum target output
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0003
+AccessType=rw
+DefaultValue=500
+PDOMapping=0
+
+[6006]
+ParameterName=vacuum target output upper
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0003
+AccessType=rw
+DefaultValue=600
+PDOMapping=0
+
+[6007]
+ParameterName=vacuum target output lower
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0003
+AccessType=rw
+DefaultValue=400
+PDOMapping=0
+
+[6008]
+ParameterName=vacuum mode
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+HighLimit=2
+LowLimit=0
+DefaultValue=1
+PDOMapping=0
+
+[6009]
+ParameterName=vacuum screen color
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+HighLimit=3
+LowLimit=0
+DefaultValue=1
+PDOMapping=0
+
+[600A]
+ParameterName=vacuum unit
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+HighLimit=4
+LowLimit=0
+DefaultValue=1
+PDOMapping=0
+
+[600B]
+ParameterName=vacuum reset
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
 
 [6010]
 ParameterName=ultrasonic range
