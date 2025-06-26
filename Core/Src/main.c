@@ -137,10 +137,10 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim1);
 
-  for (uint8_t i = 0; i < 10; i++)
+  for (uint8_t i = 0; i < 15; i++)
   {
     HAL_GPIO_TogglePin(LED_Default_GPIO_Port, LED_Default_Pin);
-    HAL_Delay(100);
+    HAL_Delay(200);
   }
 
   canOpenNodeSTM32.CANHandle = &hcan;
@@ -227,6 +227,8 @@ void canopen_process(void)
 
 void get_ultrasonic_data(void)
 {
+  HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_RESET);
+
   if (!mmodbus_readInputRegisters16i(ULTRASONIC_ADDR, ULTRASONIC_REG_START_ADDR, ULTRASONIC_BUFF_SIZE, (uint16_t *) &ultrasonic_buff))
   {
 	ultrasonic_buff[0] = 0xFFFF;
@@ -240,10 +242,14 @@ void get_ultrasonic_data(void)
 	if (OD_set_u16(OD_find(OD, 0x6010 + i), 0x00, ultrasonic_buff[i], false) != ODR_OK)
 	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
   }
+
+  HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_SET);
 }
 
 void get_vacuum_data(void)
 {
+  HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_RESET);
+
   if (!mmodbus_readHoldingRegisters16i(VACUUM_ADDR, VACUUM_REG_START_ADDR, VACUUM_BUFF_SIZE, (uint16_t *) &vacuum_buff))
   {
 	vacuum_buff[0] = 0xFFFF;
@@ -252,6 +258,8 @@ void get_vacuum_data(void)
 
   if (OD_set_u16(OD_find(OD, 0x6000), 0x00, vacuum_buff[0], false) != ODR_OK)
 	HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
+
+  HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_SET);
 }
 
 void valve_ctrl(uint16_t index, GPIO_TypeDef *port, uint16_t pin)
@@ -303,7 +311,7 @@ void htim1_cb(void)
 
   uint32_t val;
   if (OD_get_u32(OD_find(OD, RUNNING_ADDR), 0x00, &val, false) != ODR_OK)
-	HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
 
   val++;
   if (OD_set_u32(OD_find(OD, RUNNING_ADDR), 0x00, val, false) != ODR_OK)
@@ -324,6 +332,7 @@ void htim2_cb(void)
 	while (1)
 	{
       // trigger watchdog to restart
+	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_RESET);
 	  HAL_Delay(1000);
 	}
   }

@@ -1,7 +1,7 @@
 # CANopen Module
 
 ## Overview
-The `canopen_module` is an STM32-based firmware designed for industrial applications. It facilitates data acquisition and control using RS485 Modbus RTU and CANopen protocols. The module retrieves ultrasonic and vacuum data, controls valves, and communicates with an Industrial PC (IPC) via CANopen.
+The `canopen_module` is an STM32-based firmware designed for Robostore application. It facilitates data acquisition and control using RS485 Modbus RTU and CANopen protocols. The module retrieves ultrasonic and vacuum data, controls valves, and communicates with an IP) via CANopen.
 
 ## Features
 - **Ultrasonic Data Acquisition**: Collects data from ultrasonic sensors via RS485 using the Modbus RTU protocol.
