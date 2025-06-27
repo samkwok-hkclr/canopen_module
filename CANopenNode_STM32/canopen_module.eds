@@ -8,8 +8,8 @@ Description=
 CreationTime=8:30PM
 CreationDate=06-22-2025
 CreatedBy=Sam Kwok
-ModificationTime=4:09PM
-ModificationDate=06-26-2025
+ModificationTime=2:19PM
+ModificationDate=06-27-2025
 ModifiedBy=Sam Kwok
 
 [DeviceInfo]
@@ -32,7 +32,7 @@ Granularity=8
 DynamicChannelsSupported=0
 CompactPDO=0
 GroupMessaging=0
-NrOfRXPDO=2
+NrOfRXPDO=3
 NrOfTXPDO=4
 LSS_Supported=1
 NG_Slave=0
@@ -125,7 +125,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [OptionalObjects]
-SupportedObjects=44
+SupportedObjects=47
 1=0x1003
 2=0x1005
 3=0x1006
@@ -142,34 +142,37 @@ SupportedObjects=44
 14=0x1280
 15=0x1400
 16=0x1401
-17=0x1600
-18=0x1601
-19=0x1800
-20=0x1801
-21=0x1802
-22=0x1803
-23=0x1A00
-24=0x1A01
-25=0x1A02
-26=0x1A03
-27=0x6000
-28=0x6002
-29=0x6005
-30=0x6006
-31=0x6007
-32=0x6008
-33=0x6009
-34=0x600A
-35=0x600B
-36=0x6010
-37=0x6011
-38=0x6012
-39=0x6020
-40=0x6021
-41=0x6024
-42=0x6025
-43=0x6100
-44=0x6110
+17=0x1402
+18=0x1600
+19=0x1601
+20=0x1602
+21=0x1800
+22=0x1801
+23=0x1802
+24=0x1803
+25=0x1A00
+26=0x1A01
+27=0x1A02
+28=0x1A03
+29=0x6000
+30=0x6002
+31=0x6005
+32=0x6006
+33=0x6007
+34=0x6008
+35=0x6009
+36=0x600A
+37=0x600B
+38=0x6010
+39=0x6011
+40=0x6012
+41=0x601F
+42=0x6020
+43=0x6021
+44=0x6024
+45=0x6025
+46=0x6100
+47=0x6110
 
 [1003]
 ParameterName=Pre-defined error field
@@ -750,6 +753,48 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
+[1402]
+ParameterName=RPDO communication parameter
+ObjectType=0x9
+;StorageLocation=PERSIST_COMM
+SubNumber=0x4
+
+[1402sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1402sub1]
+ParameterName=COB-ID used by RPDO
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x400
+PDOMapping=0
+
+[1402sub2]
+ParameterName=Transmission type
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+DefaultValue=254
+PDOMapping=0
+
+[1402sub5]
+ParameterName=Event timer
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
 [1600]
 ParameterName=RPDO mapping parameter
 ObjectType=0x9
@@ -916,6 +961,93 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1601sub8]
+ParameterName=Application object 8
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1602]
+ParameterName=RPDO mapping parameter
+ObjectType=0x9
+;StorageLocation=PERSIST_COMM
+SubNumber=0x9
+
+[1602sub0]
+ParameterName=Number of mapped application objects in PDO
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+DefaultValue=1
+PDOMapping=0
+
+[1602sub1]
+ParameterName=Application object 1
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x601F0008
+PDOMapping=0
+
+[1602sub2]
+ParameterName=Application object 2
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1602sub3]
+ParameterName=Application object 3
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1602sub4]
+ParameterName=Application object 4
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1602sub5]
+ParameterName=Application object 5
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1602sub6]
+ParameterName=Application object 6
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1602sub7]
+ParameterName=Application object 7
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1602sub8]
 ParameterName=Application object 8
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -1623,6 +1755,15 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[601F]
+ParameterName=ultrasonic sensor enable
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rww
 DefaultValue=0
 PDOMapping=1
 

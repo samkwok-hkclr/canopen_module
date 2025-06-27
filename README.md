@@ -23,6 +23,7 @@ The `canopen_module` is an STM32-based firmware designed for Robostore. It facil
 | 0x6010 | 0x0      | uint16   | Ultrasonic Range Value                       |
 | 0x6011 | 0x0      | uint16   | Ultrasonic Sensor Internal Temperature       |
 | 0x6012 | 0x0      | uint16   | Ultrasonic Time of Flight                    |
+| 0x601F | 0x0      | uint8    | Ultrasonic Enable (non-zero value = enable)  |
 | 0x6020 | 0x0      | uint8    | Valve 1 Control (non-zero value = turn-on)   |
 | 0x6021 | 0x0      | uint8    | Valve 2 Control (non-zero value = turn-on)   |
 | 0x6024 | 0x0      | uint8    | Valve 1 State                                |
@@ -36,12 +37,14 @@ The `canopen_module` is an STM32-based firmware designed for Robostore. It facil
 | 1      | 0x6000, 0x6002             |
 | 2      | 0x6010, 0x6011, 0x6012     |
 | 3      | 0x6024, 0x6025             |
+| 4      | 0x6100                     |
 
 ### RPDO Mapping
 | PDO ID | Content                    |
 |--------|----------------------------|
 | 1      | 0x6020, 0x6021             |
 | 2      | 0x6110                     |
+| 3      | 0x611F                     |
 
 ## Usage
 1. Configure the CAN network with the specified baudrate (1Mbps)

@@ -66,6 +66,8 @@ const uint16_t ULTRASONIC_BUFF_SIZE = 3;
 uint16_t ultrasonic_buff[3] =
 { 0, 0, 0 };
 
+uint8_t prev_ultrasonic_enable = 0;
+
 const uint8_t VACUUM_ADDR = 0x12;
 const uint16_t VACUUM_REG_START_ADDR = 0x0001;
 const uint16_t VACUUM_BUFF_SIZE = 1;
@@ -245,6 +247,32 @@ void canopen_process(void)
 
 void ultrasonic_data_process(void)
 {
+	uint8_t ultrasonic_enable = 0;
+	if (OD_get_u8(OD_find(OD, 0x601F), 0x00, &ultrasonic_enable, false) != ODR_OK)
+	{
+		HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
+	}
+
+	if (prev_ultrasonic_enable && !ultrasonic_enable)
+	{
+		for (uint8_t i = 0; i < ULTRASONIC_BUFF_SIZE; i++)
+		{
+			ultrasonic_buff[i] = 0x0;
+		}
+
+		for (uint8_t i = 0; i < ULTRASONIC_BUFF_SIZE; i++)
+		{
+			if (OD_set_u16(OD_find(OD, 0x6010 + i), 0x00, ultrasonic_buff[i], false)
+					!= ODR_OK)
+				HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
+		}
+	}
+
+	prev_ultrasonic_enable = ultrasonic_enable;
+
+	if (!ultrasonic_enable)
+		return;
+
 	HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_RESET);
 
 	if (!mmodbus_readInputRegisters16i(ULTRASONIC_ADDR,
