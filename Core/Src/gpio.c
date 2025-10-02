@@ -54,14 +54,11 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LED_Default_GPIO_Port, LED_Default_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RE2_Pin|RE1_Pin|CAN_RS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, RE2_Pin|Pump_Power_Pin|RE1_Pin|CAN_RS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, Valve_2_Pin|Valve_1_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LED_1_Pin|LED_2_Pin|LED_3_Pin|LED_4_Pin
-                          |LED_5_Pin|LED_6_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, Pump_Release_Pin|LED_1_Pin|LED_2_Pin|LED_3_Pin
+                          |LED_4_Pin|LED_5_Pin|LED_6_Pin|LED_7_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = LED_Default_Pin;
@@ -77,21 +74,27 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PAPin PAPin */
+  GPIO_InitStruct.Pin = Pump_Power_Pin|CAN_RS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
                            PBPin PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = Valve_2_Pin|Valve_1_Pin|LED_1_Pin|LED_2_Pin
-                          |LED_3_Pin|LED_4_Pin|LED_5_Pin|LED_6_Pin;
+  GPIO_InitStruct.Pin = Pump_Release_Pin|LED_1_Pin|LED_2_Pin|LED_3_Pin
+                          |LED_4_Pin|LED_5_Pin|LED_6_Pin|LED_7_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = CAN_RS_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(CAN_RS_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Pin = Vacuum_Lack_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(Vacuum_Lack_GPIO_Port, &GPIO_InitStruct);
 
 }
 

@@ -72,10 +72,12 @@ void Error_Handler(void);
 #define LED_Default_GPIO_Port GPIOC
 #define RE2_Pin GPIO_PIN_4
 #define RE2_GPIO_Port GPIOA
-#define Valve_2_Pin GPIO_PIN_0
-#define Valve_2_GPIO_Port GPIOB
-#define Valve_1_Pin GPIO_PIN_1
-#define Valve_1_GPIO_Port GPIOB
+#define Pump_Power_Pin GPIO_PIN_6
+#define Pump_Power_GPIO_Port GPIOA
+#define Pump_Release_Pin GPIO_PIN_0
+#define Pump_Release_GPIO_Port GPIOB
+#define Vacuum_Lack_Pin GPIO_PIN_10
+#define Vacuum_Lack_GPIO_Port GPIOB
 #define RE1_Pin GPIO_PIN_8
 #define RE1_GPIO_Port GPIOA
 #define CAN_RS_Pin GPIO_PIN_15
@@ -92,6 +94,8 @@ void Error_Handler(void);
 #define LED_5_GPIO_Port GPIOB
 #define LED_6_Pin GPIO_PIN_8
 #define LED_6_GPIO_Port GPIOB
+#define LED_7_Pin GPIO_PIN_9
+#define LED_7_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

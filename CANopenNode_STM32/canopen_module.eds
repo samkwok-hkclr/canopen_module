@@ -8,8 +8,8 @@ Description=
 CreationTime=8:30PM
 CreationDate=06-22-2025
 CreatedBy=Sam Kwok
-ModificationTime=2:19PM
-ModificationDate=06-27-2025
+ModificationTime=4:46PM
+ModificationDate=10-02-2025
 ModifiedBy=Sam Kwok
 
 [DeviceInfo]
@@ -32,10 +32,10 @@ Granularity=8
 DynamicChannelsSupported=0
 CompactPDO=0
 GroupMessaging=0
-NrOfRXPDO=3
+NrOfRXPDO=4
 NrOfTXPDO=4
 LSS_Supported=1
-NG_Slave=0
+NG_Slave=1
 
 [DummyUsage]
 Dummy0001=0
@@ -125,7 +125,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [OptionalObjects]
-SupportedObjects=47
+SupportedObjects=60
 1=0x1003
 2=0x1005
 3=0x1006
@@ -143,36 +143,49 @@ SupportedObjects=47
 15=0x1400
 16=0x1401
 17=0x1402
-18=0x1600
-19=0x1601
-20=0x1602
-21=0x1800
-22=0x1801
-23=0x1802
-24=0x1803
-25=0x1A00
-26=0x1A01
-27=0x1A02
-28=0x1A03
-29=0x6000
-30=0x6002
-31=0x6005
-32=0x6006
-33=0x6007
-34=0x6008
-35=0x6009
-36=0x600A
-37=0x600B
-38=0x6010
-39=0x6011
-40=0x6012
-41=0x601F
-42=0x6020
-43=0x6021
-44=0x6024
-45=0x6025
-46=0x6100
-47=0x6110
+18=0x1403
+19=0x1600
+20=0x1601
+21=0x1602
+22=0x1603
+23=0x1800
+24=0x1801
+25=0x1802
+26=0x1803
+27=0x1A00
+28=0x1A01
+29=0x1A02
+30=0x1A03
+31=0x6000
+32=0x6002
+33=0x6005
+34=0x6006
+35=0x6007
+36=0x6008
+37=0x6009
+38=0x600A
+39=0x600B
+40=0x6010
+41=0x6011
+42=0x6012
+43=0x601F
+44=0x6020
+45=0x6021
+46=0x6024
+47=0x6025
+48=0x6030
+49=0x6031
+50=0x6032
+51=0x6033
+52=0x6034
+53=0x6035
+54=0x6036
+55=0x6037
+56=0x6038
+57=0x6039
+58=0x603F
+59=0x6100
+60=0x6110
 
 [1003]
 ParameterName=Pre-defined error field
@@ -477,7 +490,7 @@ ObjectType=0x7
 ;StorageLocation=PERSIST_COMM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x80+$NODEID
+DefaultValue=$NODEID+0x80
 PDOMapping=0
 
 [1015]
@@ -615,7 +628,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=ro
-DefaultValue=0x600+$NODEID
+DefaultValue=$NODEID+0x600
 PDOMapping=1
 
 [1200sub2]
@@ -624,7 +637,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=ro
-DefaultValue=0x580+$NODEID
+DefaultValue=$NODEID+0x580
 PDOMapping=1
 
 [1280]
@@ -795,6 +808,48 @@ AccessType=rw
 DefaultValue=0
 PDOMapping=0
 
+[1403]
+ParameterName=RPDO communication parameter
+ObjectType=0x9
+;StorageLocation=PERSIST_COMM
+SubNumber=0x4
+
+[1403sub0]
+ParameterName=Highest sub-index supported
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+DefaultValue=0x05
+PDOMapping=0
+
+[1403sub1]
+ParameterName=COB-ID used by RPDO
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=$NODEID+0x500
+PDOMapping=0
+
+[1403sub2]
+ParameterName=Transmission type
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+DefaultValue=254
+PDOMapping=0
+
+[1403sub5]
+ParameterName=Event timer
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0006
+AccessType=rw
+DefaultValue=0
+PDOMapping=0
+
 [1600]
 ParameterName=RPDO mapping parameter
 ObjectType=0x9
@@ -807,7 +862,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=2
+DefaultValue=4
 PDOMapping=0
 
 [1600sub1]
@@ -834,7 +889,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x601F0008
 PDOMapping=0
 
 [1600sub4]
@@ -843,7 +898,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60300008
 PDOMapping=0
 
 [1600sub5]
@@ -894,7 +949,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=1
+DefaultValue=2
 PDOMapping=0
 
 [1601sub1]
@@ -903,7 +958,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x61100008
+DefaultValue=0x60310020
 PDOMapping=0
 
 [1601sub2]
@@ -912,7 +967,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60320020
 PDOMapping=0
 
 [1601sub3]
@@ -981,7 +1036,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=1
+DefaultValue=2
 PDOMapping=0
 
 [1602sub1]
@@ -990,7 +1045,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x601F0008
+DefaultValue=0x60330020
 PDOMapping=0
 
 [1602sub2]
@@ -999,7 +1054,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60340020
 PDOMapping=0
 
 [1602sub3]
@@ -1048,6 +1103,93 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub8]
+ParameterName=Application object 8
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1603]
+ParameterName=RPDO mapping parameter
+ObjectType=0x9
+;StorageLocation=PERSIST_COMM
+SubNumber=0x9
+
+[1603sub0]
+ParameterName=Number of mapped application objects in PDO
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rw
+DefaultValue=1
+PDOMapping=0
+
+[1603sub1]
+ParameterName=Application object 1
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x61100008
+PDOMapping=0
+
+[1603sub2]
+ParameterName=Application object 2
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1603sub3]
+ParameterName=Application object 3
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1603sub4]
+ParameterName=Application object 4
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1603sub5]
+ParameterName=Application object 5
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1603sub6]
+ParameterName=Application object 6
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1603sub7]
+ParameterName=Application object 7
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rw
+DefaultValue=0x00000000
+PDOMapping=0
+
+[1603sub8]
 ParameterName=Application object 8
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -1224,7 +1366,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=200
+DefaultValue=100
 PDOMapping=0
 
 [1802sub6]
@@ -1284,7 +1426,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=500
+DefaultValue=100
 PDOMapping=0
 
 [1803sub6]
@@ -1308,7 +1450,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=2
+DefaultValue=4
 PDOMapping=0
 
 [1A00sub1]
@@ -1335,7 +1477,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60240008
 PDOMapping=0
 
 [1A00sub4]
@@ -1344,7 +1486,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60250008
 PDOMapping=0
 
 [1A00sub5]
@@ -1491,7 +1633,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60240008
+DefaultValue=0x60370020
 PDOMapping=0
 
 [1A02sub2]
@@ -1500,7 +1642,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60250008
+DefaultValue=0x60380020
 PDOMapping=0
 
 [1A02sub3]
@@ -1569,7 +1711,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=1
+DefaultValue=3
 PDOMapping=0
 
 [1A03sub1]
@@ -1578,7 +1720,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x61000020
+DefaultValue=0x60390020
 PDOMapping=0
 
 [1A03sub2]
@@ -1587,7 +1729,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60350008
 PDOMapping=0
 
 [1A03sub3]
@@ -1596,7 +1738,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60360008
 PDOMapping=0
 
 [1A03sub4]
@@ -1768,7 +1910,7 @@ DefaultValue=0
 PDOMapping=1
 
 [6020]
-ParameterName=valve 1
+ParameterName=pump power
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
@@ -1779,7 +1921,7 @@ DefaultValue=0
 PDOMapping=1
 
 [6021]
-ParameterName=valve 2
+ParameterName=pump release
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
@@ -1790,7 +1932,7 @@ DefaultValue=0
 PDOMapping=1
 
 [6024]
-ParameterName=valve 1 state
+ParameterName=pump power state
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
@@ -1799,11 +1941,116 @@ DefaultValue=0
 PDOMapping=1
 
 [6025]
-ParameterName=valve 2 state
+ParameterName=pump release state
 ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6030]
+ParameterName=clip initialize
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rww
+HighLimit=255
+LowLimit=0
+DefaultValue=0
+PDOMapping=1
+
+[6031]
+ParameterName=clip position control
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rww
+DefaultValue=0
+PDOMapping=1
+
+[6032]
+ParameterName=clip speed control
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rww
+DefaultValue=0
+PDOMapping=1
+
+[6033]
+ParameterName=clip current control
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rww
+DefaultValue=0
+PDOMapping=1
+
+[6034]
+ParameterName=clip point control
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=rww
+DefaultValue=0
+PDOMapping=1
+
+[6035]
+ParameterName=clip initialized
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+HighLimit=255
+LowLimit=0
+DefaultValue=0
+PDOMapping=1
+
+[6036]
+ParameterName=clip state
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=ro
+HighLimit=3
+LowLimit=0
+DefaultValue=0
+PDOMapping=1
+
+[6037]
+ParameterName=clip position feedback
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6038]
+ParameterName=clip speed feedback
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[6039]
+ParameterName=clip current feedback
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0007
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
+
+[603F]
+ParameterName=clip enable
+ObjectType=0x7
+;StorageLocation=RAM
+DataType=0x0005
+AccessType=rww
 DefaultValue=0
 PDOMapping=1
 
