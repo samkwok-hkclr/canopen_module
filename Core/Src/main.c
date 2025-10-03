@@ -688,6 +688,32 @@ bool enable_validation(uint16_t od_addr)
 		show_err_led();
 	}
 
+	if (prev_clip_enable && !enable)
+	{
+		for (uint8_t i = 0; i < CLIP_STATE_BUFF_SIZE; i++)
+		{
+			clip_state_buff[i] = 0x0;
+		}
+		for (uint8_t i = 0; i < CLIP_FB_BUFF_SIZE; i++)
+		{
+			clip_fb_buff[i] = 0x0;
+		}
+
+		for (uint8_t i = 0; i < CLIP_STATE_BUFF_SIZE; i++)
+		{
+			if (OD_set_u8(OD_find(OD, 0x6035 + i), 0x00, clip_state_buff[i], false) != ODR_OK)
+				show_err_led();
+		}
+
+		for (uint8_t i = 0; i < CLIP_FB_BUFF_SIZE; i++)
+		{
+			if (OD_set_u32(OD_find(OD, 0x6037 + i), 0x00, clip_fb_buff[i], false) != ODR_OK)
+				show_err_led();
+		}
+	}
+
+	prev_clip_enable = enable;
+
 	return enable ? true : false;
 }
 
