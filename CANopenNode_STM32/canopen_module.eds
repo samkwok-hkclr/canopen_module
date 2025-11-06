@@ -8,8 +8,8 @@ Description=
 CreationTime=8:30PM
 CreationDate=06-22-2025
 CreatedBy=Sam Kwok
-ModificationTime=8:59AM
-ModificationDate=10-03-2025
+ModificationTime=1:07PM
+ModificationDate=11-06-2025
 ModifiedBy=Sam Kwok
 
 [DeviceInfo]
@@ -33,7 +33,7 @@ DynamicChannelsSupported=0
 CompactPDO=0
 GroupMessaging=0
 NrOfRXPDO=4
-NrOfTXPDO=4
+NrOfTXPDO=3
 LSS_Supported=1
 NG_Slave=1
 
@@ -125,7 +125,7 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [OptionalObjects]
-SupportedObjects=60
+SupportedObjects=54
 1=0x1003
 2=0x1005
 3=0x1006
@@ -151,41 +151,35 @@ SupportedObjects=60
 23=0x1800
 24=0x1801
 25=0x1802
-26=0x1803
-27=0x1A00
-28=0x1A01
-29=0x1A02
-30=0x1A03
-31=0x6000
-32=0x6002
-33=0x6005
-34=0x6006
-35=0x6007
-36=0x6008
-37=0x6009
-38=0x600A
-39=0x600B
-40=0x6010
-41=0x6011
-42=0x6012
-43=0x601F
-44=0x6020
-45=0x6021
-46=0x6024
-47=0x6025
-48=0x6030
-49=0x6031
-50=0x6032
-51=0x6033
-52=0x6034
-53=0x6035
-54=0x6036
-55=0x6037
-56=0x6038
-57=0x6039
-58=0x603F
-59=0x6100
-60=0x6110
+26=0x1A00
+27=0x1A01
+28=0x1A02
+29=0x6000
+30=0x6002
+31=0x6005
+32=0x6006
+33=0x6007
+34=0x6008
+35=0x6009
+36=0x600A
+37=0x600B
+38=0x6010
+39=0x6011
+40=0x6012
+41=0x601F
+42=0x6020
+43=0x6021
+44=0x6024
+45=0x6025
+46=0x6030
+47=0x6031
+48=0x6032
+49=0x6035
+50=0x6036
+51=0x6037
+52=0x603F
+53=0x6100
+54=0x6110
 
 [1003]
 ParameterName=Pre-defined error field
@@ -958,7 +952,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60310020
+DefaultValue=0x603F0008
 PDOMapping=0
 
 [1601sub2]
@@ -967,7 +961,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60320020
+DefaultValue=0x60300008
 PDOMapping=0
 
 [1601sub3]
@@ -1036,7 +1030,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=2
+DefaultValue=1
 PDOMapping=0
 
 [1602sub1]
@@ -1045,7 +1039,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60330020
+DefaultValue=0x60320010
 PDOMapping=0
 
 [1602sub2]
@@ -1054,7 +1048,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60340020
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1602sub3]
@@ -1123,7 +1117,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=4
+DefaultValue=1
 PDOMapping=0
 
 [1603sub1]
@@ -1132,7 +1126,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x61100008
+DefaultValue=0x60310010
 PDOMapping=0
 
 [1603sub2]
@@ -1141,7 +1135,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x601F0008
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub3]
@@ -1150,7 +1144,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x603F0008
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub4]
@@ -1159,7 +1153,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60300008
+DefaultValue=0x00000000
 PDOMapping=0
 
 [1603sub5]
@@ -1246,7 +1240,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=100
+DefaultValue=50
 PDOMapping=0
 
 [1800sub6]
@@ -1366,70 +1360,10 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0006
 AccessType=rw
-DefaultValue=100
+DefaultValue=50
 PDOMapping=0
 
 [1802sub6]
-ParameterName=SYNC start value
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=rw
-DefaultValue=0
-PDOMapping=0
-
-[1803]
-ParameterName=TPDO communication parameter
-ObjectType=0x9
-;StorageLocation=PERSIST_COMM
-SubNumber=0x6
-
-[1803sub0]
-ParameterName=Highest sub-index supported
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=ro
-DefaultValue=0x06
-PDOMapping=0
-
-[1803sub1]
-ParameterName=COB-ID used by TPDO
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=$NODEID+0x40000480
-PDOMapping=0
-
-[1803sub2]
-ParameterName=Transmission type
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=rw
-DefaultValue=254
-PDOMapping=0
-
-[1803sub3]
-ParameterName=Inhibit time
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0006
-AccessType=rw
-DefaultValue=0
-PDOMapping=0
-
-[1803sub5]
-ParameterName=Event timer
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0006
-AccessType=rw
-DefaultValue=100
-PDOMapping=0
-
-[1803sub6]
 ParameterName=SYNC start value
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -1624,7 +1558,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rw
-DefaultValue=2
+DefaultValue=4
 PDOMapping=0
 
 [1A02sub1]
@@ -1633,7 +1567,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60370020
+DefaultValue=0x60350008
 PDOMapping=0
 
 [1A02sub2]
@@ -1642,7 +1576,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x60380020
+DefaultValue=0x60360008
 PDOMapping=0
 
 [1A02sub3]
@@ -1651,7 +1585,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60370010
 PDOMapping=0
 
 [1A02sub4]
@@ -1660,7 +1594,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rw
-DefaultValue=0x00000000
+DefaultValue=0x60320010
 PDOMapping=0
 
 [1A02sub5]
@@ -1691,93 +1625,6 @@ DefaultValue=0x00000000
 PDOMapping=0
 
 [1A02sub8]
-ParameterName=Application object 8
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=0x00000000
-PDOMapping=0
-
-[1A03]
-ParameterName=TPDO mapping parameter
-ObjectType=0x9
-;StorageLocation=PERSIST_COMM
-SubNumber=0x9
-
-[1A03sub0]
-ParameterName=Number of mapped application objects in PDO
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0005
-AccessType=rw
-DefaultValue=3
-PDOMapping=0
-
-[1A03sub1]
-ParameterName=Application object 1
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=0x60390020
-PDOMapping=0
-
-[1A03sub2]
-ParameterName=Application object 2
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=0x60350008
-PDOMapping=0
-
-[1A03sub3]
-ParameterName=Application object 3
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=0x60360008
-PDOMapping=0
-
-[1A03sub4]
-ParameterName=Application object 4
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=0x00000000
-PDOMapping=0
-
-[1A03sub5]
-ParameterName=Application object 5
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=0x00000000
-PDOMapping=0
-
-[1A03sub6]
-ParameterName=Application object 6
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=0x00000000
-PDOMapping=0
-
-[1A03sub7]
-ParameterName=Application object 7
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rw
-DefaultValue=0x00000000
-PDOMapping=0
-
-[1A03sub8]
 ParameterName=Application object 8
 ObjectType=0x7
 ;StorageLocation=RAM
@@ -1964,36 +1811,22 @@ PDOMapping=1
 ParameterName=clip position control
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0007
+DataType=0x0006
 AccessType=rww
+HighLimit=1000
+LowLimit=0
 DefaultValue=0
 PDOMapping=1
 
 [6032]
-ParameterName=clip speed control
+ParameterName=clip force control
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0007
-AccessType=rww
-DefaultValue=0
-PDOMapping=1
-
-[6033]
-ParameterName=clip current control
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rww
-DefaultValue=0
-PDOMapping=1
-
-[6034]
-ParameterName=clip point control
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=rww
-DefaultValue=0
+DataType=0x0006
+AccessType=rw
+HighLimit=100
+LowLimit=20
+DefaultValue=20
 PDOMapping=1
 
 [6035]
@@ -2002,7 +1835,7 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=ro
-HighLimit=255
+HighLimit=1
 LowLimit=0
 DefaultValue=0
 PDOMapping=1
@@ -2022,25 +1855,7 @@ PDOMapping=1
 ParameterName=clip position feedback
 ObjectType=0x7
 ;StorageLocation=RAM
-DataType=0x0007
-AccessType=ro
-DefaultValue=0
-PDOMapping=1
-
-[6038]
-ParameterName=clip speed feedback
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
-AccessType=ro
-DefaultValue=0
-PDOMapping=1
-
-[6039]
-ParameterName=clip current feedback
-ObjectType=0x7
-;StorageLocation=RAM
-DataType=0x0007
+DataType=0x0006
 AccessType=ro
 DefaultValue=0
 PDOMapping=1
@@ -2051,7 +1866,9 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0005
 AccessType=rww
-DefaultValue=0
+HighLimit=1
+LowLimit=0
+DefaultValue=1
 PDOMapping=1
 
 [6100]

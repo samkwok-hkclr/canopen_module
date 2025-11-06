@@ -63,9 +63,10 @@ const uint16_t ULTRASONIC_REG_START_ADDR = 0x0000;
 const uint16_t ULTRASONIC_BUFF_SIZE = 3;
 
 const uint8_t CLIP_ADDR = 0x07;
-const uint16_t CLIP_STATE_REG_START_ADDR = 0x0040;
-const uint16_t CLIP_STATE_BUFF_SIZE = 2;
-const uint16_t CLIP_FB_REG_START_ADDR = 0x0042;
+const uint16_t CLIP_INIT_ADDR = 0x0100;
+const uint16_t CLIP_FORCE_ADDR = 0x0101;
+const uint16_t CLIP_POSITION_ADDR = 0x0103;
+const uint16_t CLIP_FB_REG_START_ADDR = 0x0200;
 const uint16_t CLIP_FB_BUFF_SIZE = 3;
 
 const uint8_t VACUUM_ADDR = 0x12;
@@ -84,20 +85,18 @@ CANopenNodeSTM32 canOpenNodeSTM32;
 
 uint16_t ultrasonic_buff[3] = { 0, 0, 0 };
 
-uint16_t clip_state_buff[2] = { 0, 0 };
-uint32_t clip_fb_buff[3] = { 0, 0 };
+uint8_t clip_init_buff[1] = { 0 };
+uint16_t clip_position_buff[1] = { 0 };
+uint16_t clip_force_buff[1] = { 0 };
+uint16_t clip_fb_buff[3] = { 0, 0, 0 };
 
 bool clip_init_diff = false;
 bool clip_position_diff = false;
-bool clip_speed_diff = false;
-bool clip_current_diff = false;
-bool clip_point_diff = false;
+bool clip_force_diff = false;
 
 uint8_t prev_clip_init = 0;
-uint32_t prev_clip_position = 0;
-uint32_t prev_clip_speed = 0;
-uint32_t prev_clip_current = 0;
-uint32_t prev_clip_point = 0;
+uint16_t prev_clip_position = 0;
+uint16_t prev_clip_force = 0;
 
 uint8_t prev_ultrasonic_enable = 0;
 uint8_t prev_clip_enable = 0;
@@ -119,11 +118,11 @@ void ultrasonic_data_process(void);
 void clip_data_process(void);
 void clip_control_process(void);
 
+void write_clip_u8(uint16_t od_addr, uint16_t modbus_addr);
 void write_clip_u16(uint16_t od_addr, uint16_t modbus_addr);
-void write_clip_u32(uint16_t od_addr, uint16_t modbus_addr);
 
 void clip_u8_diff_validation(uint16_t od_addr, bool* diff, uint8_t* prev);
-void clip_u32_diff_validation(uint16_t od_addr, bool* diff, uint32_t* prev);
+void clip_u16_diff_validation(uint16_t od_addr, bool* diff, uint16_t* prev);
 
 void vacuum_data_process(void);
 void vacuum_config_process(void);
@@ -328,6 +327,7 @@ void ultrasonic_data_process(void)
 			show_err_led();
 	}
 
+	HAL_Delay(5);
 	HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_SET);
 }
 
@@ -335,99 +335,95 @@ void clip_data_process(void)
 {
 	HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
 
-	HAL_Delay(5); // FIXME: error may occur if without this delay
-
-	if (!mmodbus_readHoldingRegisters16i(CLIP_ADDR, CLIP_STATE_REG_START_ADDR, CLIP_STATE_BUFF_SIZE, (uint16_t*) &clip_state_buff))
+	if (!mmodbus_readHoldingRegisters16i(CLIP_ADDR, CLIP_POSITION_ADDR, 1, (uint16_t*) &clip_position_buff))
 	{
-		for (uint8_t i = 0; i < 2; i++)
-		{
-			clip_state_buff[i] = 0xFFFF;
-		}
+		clip_position_buff[0] = 0xFFFF;
 		show_err_led();
 	}
 
-	if (!mmodbus_readHoldingRegisters32i(CLIP_ADDR, CLIP_FB_REG_START_ADDR, CLIP_FB_BUFF_SIZE, (uint32_t*) &clip_fb_buff))
+	HAL_Delay(1);
+
+	if (!mmodbus_readHoldingRegisters16i(CLIP_ADDR, CLIP_FORCE_ADDR, 1, (uint16_t*) &clip_force_buff))
+	{
+		clip_force_buff[0] = 0xFFFF;
+		show_err_led();
+	}
+
+	HAL_Delay(1);
+
+	if (!mmodbus_readHoldingRegisters16i(CLIP_ADDR, CLIP_FB_REG_START_ADDR, CLIP_FB_BUFF_SIZE, (uint16_t*) &clip_fb_buff))
 	{
 		for (uint8_t i = 0; i < CLIP_FB_BUFF_SIZE; i++)
 		{
-			clip_fb_buff[i] = 0xFFFFFFFF;
+			clip_fb_buff[i] = 0xFFFF;
 		}
 		show_err_led();
 	}
 
+	HAL_Delay(3);
 	HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_SET);
 }
 
 void clip_control_process(void)
 {
 	HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
+
 	if (clip_init_diff)
 	{
-		write_clip_u16(0x6030, 0x0000);
+		write_clip_u8(0x6030, CLIP_INIT_ADDR);
 		clip_init_diff = false;
 	}
 
 	if (clip_position_diff)
 	{
-		write_clip_u32(0x6031, 0x0002);
+		write_clip_u16(0x6031, CLIP_POSITION_ADDR);
 		clip_position_diff = false;
 	}
 
-	if (clip_speed_diff)
+	if (clip_force_diff)
 	{
-		write_clip_u32(0x6032, 0x0004);
-		clip_speed_diff = false;
+		write_clip_u16(0x6032, CLIP_FORCE_ADDR);
+		clip_force_diff = false;
 	}
 
-	if (clip_current_diff)
-	{
-		write_clip_u32(0x6033, 0x0006);
-		clip_current_diff = false;
-	}
-
-	if (clip_point_diff)
-	{
-		write_clip_u32(0x6034, 0x0017);
-		clip_point_diff = false;
-	}
-
+	HAL_Delay(2);
 	HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_SET);
+}
+
+void write_clip_u8(uint16_t od_addr, uint16_t modbus_addr)
+{
+	uint8_t tmp = 0;
+	if (OD_get_u8(OD_find(OD, od_addr), 0x00, &tmp, false) != ODR_OK)
+	{
+		show_err_led();
+	}
+
+	uint16_t data = tmp;
+
+	if (!mmodbus_writeHoldingRegisters16i(CLIP_ADDR, modbus_addr, 1, (uint16_t*) &data))
+	{
+		show_err_led();
+	}
+
+	HAL_Delay(1);
 }
 
 void write_clip_u16(uint16_t od_addr, uint16_t modbus_addr)
 {
-	uint8_t data_u8 = 0;
-	if (OD_get_u8(OD_find(OD, od_addr), 0x00, &data_u8, false) != ODR_OK)
+	uint16_t tmp = 0;
+	if (OD_get_u16(OD_find(OD, od_addr), 0x00, &tmp, false) != ODR_OK)
 	{
 		show_err_led();
 	}
 
-	uint16_t data_u16 = data_u8;
+	uint16_t data = tmp;
 
-	HAL_Delay(5); // FIXME: error may occur if without this delay
-
-	if (!mmodbus_writeHoldingRegisters16i(CLIP_ADDR, modbus_addr, 1, (uint16_t*) &data_u16))
-	{
-		show_err_led();
-	}
-}
-
-void write_clip_u32(uint16_t od_addr, uint16_t modbus_addr)
-{
-	uint32_t data = 0;
-	if (OD_get_u32(OD_find(OD, od_addr), 0x00, &data, false) != ODR_OK)
+	if (!mmodbus_writeHoldingRegisters16i(CLIP_ADDR, modbus_addr, 1, (uint16_t*) &data))
 	{
 		show_err_led();
 	}
 
-	data = (data >> 16) | (data << 16);
-
-	HAL_Delay(5); // FIXME: error occur if without this delay
-
-	if (!mmodbus_writeHoldingRegisters16i(CLIP_ADDR, modbus_addr, 2, (uint16_t*) &data))
-	{
-		show_err_led();
-	}
+	HAL_Delay(1);
 }
 
 void vacuum_data_process(void)
@@ -443,6 +439,7 @@ void vacuum_data_process(void)
 		show_err_led();
 	}
 
+	HAL_Delay(5);
 	HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_SET);
 }
 
@@ -463,6 +460,8 @@ void vacuum_config_process(void)
 		show_err_led();
 	}
 
+	HAL_Delay(1);
+
 	for (uint8_t i = 0; i < VACUUM_CONFIG_BUFF_SIZE; i++)
 	{
 		uint8_t data = 0;
@@ -482,6 +481,8 @@ void vacuum_config_process(void)
 		{
 			show_err_led();
 		}
+
+		HAL_Delay(1);
 	}
 
 	uint8_t reset = 0;
@@ -505,8 +506,11 @@ void vacuum_config_process(void)
 		{
 			show_err_led();
 		}
+
+		HAL_Delay(1);
 	}
 
+	HAL_Delay(2);
 	HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_SET);
 }
 
@@ -623,26 +627,18 @@ void htim3_cb(void)
 	pump_state(0x6024, Pump_Power_GPIO_Port, Pump_Power_Pin);
 	pump_state(0x6025, Pump_Release_GPIO_Port, Pump_Release_Pin);
 
-	if (OD_set_u8(OD_find(OD, 0x6035), 0x00, (uint8_t) clip_state_buff[0], false) != ODR_OK)
+	if (OD_set_u8(OD_find(OD, 0x6035), 0x00, (uint8_t) clip_fb_buff[0], false) != ODR_OK)
 		show_err_led();
 
-	if (OD_set_u8(OD_find(OD, 0x6036), 0x00, (uint8_t) clip_state_buff[1], false) != ODR_OK)
+	if (OD_set_u8(OD_find(OD, 0x6036), 0x00, (uint8_t) clip_fb_buff[1], false) != ODR_OK)
 		show_err_led();
 
-	if (OD_set_u32(OD_find(OD, 0x6037), 0x00, clip_fb_buff[0], false) != ODR_OK)
-		show_err_led();
-
-	if (OD_set_u32(OD_find(OD, 0x6038), 0x00, clip_fb_buff[1], false) != ODR_OK)
-		show_err_led();
-
-	if (OD_set_u32(OD_find(OD, 0x6039), 0x00, clip_fb_buff[2], false) != ODR_OK)
+	if (OD_set_u16(OD_find(OD, 0x6037), 0x00, clip_fb_buff[2], false) != ODR_OK)
 		show_err_led();
 
 	clip_u8_diff_validation(0x6030, &clip_init_diff, &prev_clip_init);
-	clip_u32_diff_validation(0x6031, &clip_position_diff, &prev_clip_position);
-	clip_u32_diff_validation(0x6032, &clip_speed_diff, &prev_clip_speed);
-	clip_u32_diff_validation(0x6033, &clip_current_diff, &prev_clip_current);
-	clip_u32_diff_validation(0x6034, &clip_point_diff, &prev_clip_point);
+	clip_u16_diff_validation(0x6031, &clip_position_diff, &prev_clip_position);
+	clip_u16_diff_validation(0x6032, &clip_force_diff, &prev_clip_force);
 }
 
 void clip_u8_diff_validation(uint16_t od_addr, bool* diff, uint8_t* prev)
@@ -662,11 +658,11 @@ void clip_u8_diff_validation(uint16_t od_addr, bool* diff, uint8_t* prev)
 	*prev = val;
 }
 
-void clip_u32_diff_validation(uint16_t od_addr, bool* diff, uint32_t* prev)
+void clip_u16_diff_validation(uint16_t od_addr, bool* diff, uint16_t* prev)
 {
-	uint32_t val = 0;
+	uint16_t val = 0;
 
-	if (OD_get_u32(OD_find(OD, od_addr), 0x00, &val, false) != ODR_OK)
+	if (OD_get_u16(OD_find(OD, od_addr), 0x00, &val, false) != ODR_OK)
 	{
 		show_err_led();
 	}
@@ -690,26 +686,9 @@ bool enable_validation(uint16_t od_addr)
 
 	if (prev_clip_enable && !enable)
 	{
-		for (uint8_t i = 0; i < CLIP_STATE_BUFF_SIZE; i++)
-		{
-			clip_state_buff[i] = 0x0;
-		}
-		for (uint8_t i = 0; i < CLIP_FB_BUFF_SIZE; i++)
-		{
-			clip_fb_buff[i] = 0x0;
-		}
-
-		for (uint8_t i = 0; i < CLIP_STATE_BUFF_SIZE; i++)
-		{
-			if (OD_set_u8(OD_find(OD, 0x6035 + i), 0x00, clip_state_buff[i], false) != ODR_OK)
-				show_err_led();
-		}
-
-		for (uint8_t i = 0; i < CLIP_FB_BUFF_SIZE; i++)
-		{
-			if (OD_set_u32(OD_find(OD, 0x6037 + i), 0x00, clip_fb_buff[i], false) != ODR_OK)
-				show_err_led();
-		}
+		clip_init_buff[0] = 0x0;
+		clip_position_buff[0] = 0x0;
+		clip_force_buff[0] = 0x0;
 	}
 
 	prev_clip_enable = enable;
